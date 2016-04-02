@@ -13,9 +13,12 @@ import si.kisek.pivovarna.pivostevec.R;
 import si.kisek.pivovarna.pivostevec.adapters.CustomListAdapter;
 import si.kisek.pivovarna.pivostevec.models.Pivo;
 import si.kisek.pivovarna.pivostevec.models.Runda;
+import si.kisek.pivovarna.pivostevec.utils.RundaDateComparator;
 import si.kisek.pivovarna.pivostevec.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +68,10 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onResume();
 		list = Utils.getSavedRundas(MainActivity.this);
+
+		RundaDateComparator comp = new RundaDateComparator();
+		Collections.sort(list, comp);
+
 		if(list.size() > 0)
 		{
 			TextView emptyText = (TextView) findViewById(R.id.emptyListText);

@@ -10,8 +10,10 @@ import android.widget.TextView;
 import si.kisek.pivovarna.pivostevec.R;
 import si.kisek.pivovarna.pivostevec.adapters.CustomListAdapter;
 import si.kisek.pivovarna.pivostevec.models.Runda;
+import si.kisek.pivovarna.pivostevec.utils.RundaDateComparator;
 import si.kisek.pivovarna.pivostevec.utils.Utils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity
@@ -35,6 +37,9 @@ public class HistoryActivity extends AppCompatActivity
 		list = Utils.getArchive(context);
 		if(list.size() > 0)
 		{
+			RundaDateComparator comparator = new RundaDateComparator();
+			Collections.sort(list, comparator);
+
 			TextView emptyText = (TextView) findViewById(R.id.emptyListText);
 			emptyText.setVisibility(View.INVISIBLE);
 			CustomListAdapter adapter = new CustomListAdapter(this, R.layout.list_row_runda, list);
