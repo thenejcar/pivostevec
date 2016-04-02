@@ -14,7 +14,7 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                      android:weightSum="6"
+                      android:weightSum="7"
                         android:id="@+id/header_grid_layout"
                 android:background="#d0d0d0">
 
@@ -35,7 +35,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16dp"
                         android:textColor="#000000"
-                        android:text="Datum"
+                        android:text="Starost"
                         android:id="@+id/date"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
@@ -55,17 +55,30 @@
                         android:paddingBottom="4dp"
                         android:layout_weight="1"/>
                 <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textSize="16dp"
-                        android:textColor="#000000"
-                        android:text="0.3L"
-                        android:id="@+id/count03"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:layout_weight="1"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:textColor="#000000"
+                    android:text="0.3L"
+                    android:id="@+id/count03"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="16dp"
+                    android:textColor="#000000"
+                    android:text="Σ"
+                    android:id="@+id/suma"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_weight="1"/>
         </LinearLayout>
 
         <Button
