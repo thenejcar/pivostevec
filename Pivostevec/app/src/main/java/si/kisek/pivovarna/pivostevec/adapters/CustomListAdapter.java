@@ -1,6 +1,7 @@
 package si.kisek.pivovarna.pivostevec.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import si.kisek.pivovarna.pivostevec.models.Runda;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,18 +49,34 @@ public class CustomListAdapter extends ArrayAdapter<Runda>
 		if(runda != null)
 		{
 			TextView name = (TextView) convertView.findViewById(R.id.name);
-			TextView date = (TextView) convertView.findViewById(R.id.date);
+			TextView starost = (TextView) convertView.findViewById(R.id.starost);
 			TextView count05 = (TextView) convertView.findViewById(R.id.count05);
 			TextView count03 = (TextView) convertView.findViewById(R.id.count03);
+			TextView suma = (TextView) convertView.findViewById(R.id.suma);
 
 			if(name != null)
 				name.setText(runda.getPivo().getName());
-			if(date != null)
-				date.setText(formatter.format(runda.getDate()));
+			if(starost != null){
+				//date.setText(formatter.format(runda.getDate()));
+				long millisAge = new Date().getTime() - runda.getDate().getTime();
+				long days = millisAge / (1000 * 60 * 60 * 24);
+				starost.setText(""+days);
+
+				if(days < 21){
+					starost.setTextColor(Color.RED);
+					//convertView.setBackgroundColor(Color.RED);
+				}
+				else{
+					starost.setTextColor(Color.BLACK);
+					//convertView.setBackgroundColor(Color.TRANSPARENT);
+				}
+			}
+
 			if(count05 != null)
 				count05.setText(String.format("%2d", runda.getCount05()));
 			if(count03 != null)
 				count03.setText(String.format("%2d", runda.getCount03()));
+			suma.setText(String.format("%2d", runda.getCount05() + runda.getCount03()));
 		}
 		return convertView;
 	}
