@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import org.json.JSONException;
+import org.json.JSONObject;
 import si.kisek.pivovarna.pivostevec.R;
 import si.kisek.pivovarna.pivostevec.models.Runda;
 import si.kisek.pivovarna.pivostevec.utils.Utils;
@@ -38,7 +40,7 @@ public class RundaDetailsActivity extends AppCompatActivity
 
 	private Context context;
 	private Runda activeRunda;
-	private int activeRundaPos;
+	private String activeRundaStr;
 	private List<Runda> list;
 
 	private int change05 = 0;
@@ -51,12 +53,21 @@ public class RundaDetailsActivity extends AppCompatActivity
 		setContentView(R.layout.activity_runda_details);
 		context = this;
 
-		activeRundaPos = getIntent().getIntExtra("runda", -1);
-		if(activeRundaPos == -1)
+		activeRundaStr = getIntent().getStringExtra("runda");
+		if(activeRundaStr == null)
 		{
-			Toast.makeText(RundaDetailsActivity.this, "Error", Toast.LENGTH_SHORT).show();
+			Toast.makeText(RundaDetailsActivity.this, "Error, couldn't read intent extra", Toast.LENGTH_SHORT).show();
 			finish();
 		}
+
+		try
+		{
+			activeRunda = Utils.rundaFromJSONObject(new JSONObject(activeRundaStr));
+		} catch (JSONException e)
+		{
+			Toast.makeText(RundaDetailsActivity.this, "Error, couldn't convert String to JSONObject", Toast.LENGTH_SHORT);
+		}
+
 
 		name = (TextView) findViewById(R.id.name);
 		desc = (TextView) findViewById(R.id.desc);
@@ -72,7 +83,6 @@ public class RundaDetailsActivity extends AppCompatActivity
 		delete = (Button) findViewById(R.id.buttonDelete);
 
 		list = Utils.getSavedRundas(context);
-		activeRunda = list.get(activeRundaPos);
 		Log.d(TAG, activeRunda.toString());
 
 		name.setText(activeRunda.getPivo().getName());
@@ -107,7 +117,7 @@ public class RundaDetailsActivity extends AppCompatActivity
 					@Override
 					public void onClick(DialogInterface dialog, int which)
 					{
-						list.remove(activeRundaPos);
+						list.remove(activeRunda);
 						Utils.saveRundas(context, list);
 						finish();
 					}

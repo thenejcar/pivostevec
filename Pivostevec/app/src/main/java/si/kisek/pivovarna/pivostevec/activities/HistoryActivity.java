@@ -35,6 +35,8 @@ public class HistoryActivity extends AppCompatActivity
 		context = HistoryActivity.this;
 
 		listView = (ListView) findViewById(R.id.listView);
+		TextView skupaj = (TextView) findViewById(R.id.nameTotal);
+		skupaj.setText("skupaj zvarjeno:");
 
 		count05total = (TextView) findViewById(R.id.count05Total);
 		count03total = (TextView) findViewById(R.id.count03Total);

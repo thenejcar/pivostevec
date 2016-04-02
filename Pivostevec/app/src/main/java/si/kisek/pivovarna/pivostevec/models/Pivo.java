@@ -39,4 +39,25 @@ public class Pivo
 	{
 		return name;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (!(o instanceof Pivo)) return false;
+
+		Pivo pivo = (Pivo) o;
+
+		if (name != null ? !name.equals(pivo.name) : pivo.name != null) return false;
+		return !(desc != null ? !desc.equals(pivo.desc) : pivo.desc != null);
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = name != null ? name.hashCode() : 0;
+		result = 31 * result + (desc != null ? desc.hashCode() : 0);
+		return result;
+	}
 }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
 			{
 				Log.d(TAG, "clicked " + position + " " + list.get(position).toString());
 				Intent intent = new Intent(MainActivity.this, RundaDetailsActivity.class);
-				intent.putExtra("runda", position);
+				intent.putExtra("runda", Utils.rundaToJSONObject(list.get(position)).toString());
 				startActivity(intent);
 			}
 		});
@@ -65,11 +65,11 @@ public class MainActivity extends AppCompatActivity
 		super.onResume();
 		list = Utils.getSavedRundas(MainActivity.this);
 
-		RundaDateComparator comp = new RundaDateComparator();
-		Collections.sort(list, comp);
-
 		if(list.size() > 0)
 		{
+			RundaDateComparator comp = new RundaDateComparator();
+			Collections.sort(list, comp);
+
 			TextView emptyText = (TextView) findViewById(R.id.emptyListText);
 			emptyText.setVisibility(View.INVISIBLE);
 			CustomListAdapter adapter = new CustomListAdapter(this, R.layout.list_row_runda, list);

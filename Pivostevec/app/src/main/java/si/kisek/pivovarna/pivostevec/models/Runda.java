@@ -65,4 +65,29 @@ public class Runda
 	{
 		return pivo.getName()+" "+date.toString()+" "+count05+" "+count03;
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (!(o instanceof Runda)) return false;
+
+		Runda runda = (Runda) o;
+
+		if (count05 != runda.count05) return false;
+		if (count03 != runda.count03) return false;
+		if (pivo != null ? !pivo.equals(runda.pivo) : runda.pivo != null) return false;
+		return !(date != null ? !date.equals(runda.date) : runda.date != null);
+
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = pivo != null ? pivo.hashCode() : 0;
+		result = 31 * result + (date != null ? date.hashCode() : 0);
+		result = 31 * result + count05;
+		result = 31 * result + count03;
+		return result;
+	}
 }
