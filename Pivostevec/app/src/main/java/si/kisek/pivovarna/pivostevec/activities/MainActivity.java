@@ -27,7 +27,10 @@ public class MainActivity extends AppCompatActivity
 	private static final String TAG = "MainActivity";
 
 	private ListView listView;
-	private Button addButton;
+
+	private TextView count05total;
+	private TextView count03total;
+	private TextView sumaTotal;
 
 	List<Runda> list;
 
@@ -38,7 +41,10 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 
 		listView = (ListView) findViewById(R.id.listView);
-		addButton = (Button) findViewById(R.id.buttonAdd);
+
+		count05total = (TextView) findViewById(R.id.count05Total);
+		count03total = (TextView) findViewById(R.id.count03Total);
+		sumaTotal = (TextView) findViewById(R.id.sumaTotal);
 
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
@@ -48,16 +54,6 @@ public class MainActivity extends AppCompatActivity
 				Log.d(TAG, "clicked " + position + " " + list.get(position).toString());
 				Intent intent = new Intent(MainActivity.this, RundaDetailsActivity.class);
 				intent.putExtra("runda", position);
-				startActivity(intent);
-			}
-		});
-
-		addButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(MainActivity.this, AddActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -77,6 +73,19 @@ public class MainActivity extends AppCompatActivity
 			TextView emptyText = (TextView) findViewById(R.id.emptyListText);
 			emptyText.setVisibility(View.INVISIBLE);
 			CustomListAdapter adapter = new CustomListAdapter(this, R.layout.list_row_runda, list);
+
+			int sum05 = 0;
+			int sum03 = 0;
+			for(Runda r : list) {
+				sum03 += r.getCount03();
+				// isto kot sum03 = sum03 + r.getCount03();
+				sum05 += r.getCount05();
+			}
+
+			count05total.setText("" + sum05);
+			count03total.setText("" + sum03);
+			sumaTotal.setText("" + (sum05+sum03));
+
 			listView.setAdapter(adapter);
 		}
 		else
@@ -99,6 +108,10 @@ public class MainActivity extends AppCompatActivity
 		{
 			case R.id.history:
 				startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+				return true;
+			case R.id.dodaj:
+				Intent intent = new Intent(MainActivity.this, AddActivity.class);
+				startActivity(intent);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

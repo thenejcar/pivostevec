@@ -80,21 +80,85 @@
                     android:paddingBottom="4dp"
                     android:layout_weight="1"/>
         </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="7"
+        android:id="@+id/total_grid_layout"
+        android:background="#d0d0d0"
+        android:layout_below="@+id/header_grid_layout">
 
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dodaj Rundo"
-                android:id="@+id/buttonAdd"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-                android:layout_alignRight="@+id/listView" android:layout_alignEnd="@+id/listView"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#000000"
+            android:text="skupaj zaloga:"
+            android:id="@+id/nameTotal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_weight="3"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#000000"
+            android:text=""
+            android:id="@+id/dateTotal"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#000000"
+            android:text="555"
+            android:id="@+id/count05Total"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="#000000"
+            android:text="333"
+            android:id="@+id/count03Total"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="16dp"
+            android:textColor="#000000"
+            android:text="888"
+            android:id="@+id/sumaTotal"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
         <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/listView"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/header_grid_layout"
+                android:layout_below="@+id/total_grid_layout"
                 android:layout_above="@+id/buttonAdd"/>
         <TextView
                 android:layout_width="wrap_content"
