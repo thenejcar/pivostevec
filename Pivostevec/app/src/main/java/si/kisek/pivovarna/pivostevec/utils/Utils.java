@@ -11,6 +11,7 @@ import si.kisek.pivovarna.pivostevec.models.Runda;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +77,9 @@ public class Utils
 
 	public static void saveRundas(Context context, List<Runda> list)
 	{
+		RundaDateComparator dateComparator = new RundaDateComparator();
+		Collections.sort(list, dateComparator);
+
 		File file = getRundaFile(context);
 		try
 		{

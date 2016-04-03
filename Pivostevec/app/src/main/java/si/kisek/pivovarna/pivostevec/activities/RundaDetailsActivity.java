@@ -41,6 +41,7 @@ public class RundaDetailsActivity extends AppCompatActivity
 	private Context context;
 	private Runda activeRunda;
 	private String activeRundaStr;
+	private int activeRundaPos;
 	private List<Runda> list;
 
 	private int change05 = 0;
@@ -65,9 +66,8 @@ public class RundaDetailsActivity extends AppCompatActivity
 			activeRunda = Utils.rundaFromJSONObject(new JSONObject(activeRundaStr));
 		} catch (JSONException e)
 		{
-			Toast.makeText(RundaDetailsActivity.this, "Error, couldn't convert String to JSONObject", Toast.LENGTH_SHORT);
+			Toast.makeText(RundaDetailsActivity.this, "Error, couldn't convert String to JSONObject", Toast.LENGTH_SHORT).show();
 		}
-
 
 		name = (TextView) findViewById(R.id.name);
 		desc = (TextView) findViewById(R.id.desc);
@@ -84,6 +84,11 @@ public class RundaDetailsActivity extends AppCompatActivity
 
 		list = Utils.getSavedRundas(context);
 		Log.d(TAG, activeRunda.toString());
+		activeRundaPos = list.indexOf(activeRunda);
+		if(activeRundaPos < 0)
+		{
+			Toast.makeText(RundaDetailsActivity.this, "Error, active runda not on the list", Toast.LENGTH_SHORT).show();
+		}
 
 		name.setText(activeRunda.getPivo().getName());
 		desc.setText(activeRunda.getPivo().getDesc());
@@ -99,6 +104,7 @@ public class RundaDetailsActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
+				list.set(activeRundaPos, activeRunda);
 				Utils.saveRundas(context, list);
 				finish();
 			}
@@ -117,7 +123,7 @@ public class RundaDetailsActivity extends AppCompatActivity
 					@Override
 					public void onClick(DialogInterface dialog, int which)
 					{
-						list.remove(activeRunda);
+						list.remove(activeRundaPos);
 						Utils.saveRundas(context, list);
 						finish();
 					}
