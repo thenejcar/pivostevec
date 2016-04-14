@@ -58,13 +58,10 @@ public class CustomListAdapter extends ArrayAdapter<Runda> {
 				long days = millisAge / (1000 * 60 * 60 * 24);
 				starost.setText("" + days);
 				String ime = runda.getPivo().getName();
-
 				if (days < 8) {
 					starost.setTextColor(Color.RED);
-					//convertView.setBackgroundColor(Color.RED);
 				} else if (days < 21) {
 					starost.setTextColor(Color.BLUE);
-					//convertView.setBackgroundColor(Color.RED);
 				} else {
 					switch (ime) {
 						case "Sigismundus":
@@ -73,6 +70,9 @@ public class CustomListAdapter extends ArrayAdapter<Runda> {
 						default:
 							starost.setTextColor(Color.BLACK);
 							break;
+					}
+					if (days > 59) {
+						starost.setTextColor(Color.BLACK);
 					}
 				}
 			}
