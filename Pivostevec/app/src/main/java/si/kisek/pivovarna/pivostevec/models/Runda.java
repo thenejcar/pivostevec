@@ -35,10 +35,14 @@ public class Runda
 		return date;
 	}
 
+
+
 	public void setDate(Date date)
 	{
 		this.date = date;
 	}
+
+
 
 	public int getCount05()
 	{

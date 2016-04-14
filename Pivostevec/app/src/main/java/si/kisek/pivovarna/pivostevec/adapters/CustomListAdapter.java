@@ -18,66 +18,71 @@ import java.util.List;
 /**
  * Created by nejc on 3/26/16.
  */
-public class CustomListAdapter extends ArrayAdapter<Runda>
-{
+public class CustomListAdapter extends ArrayAdapter<Runda> {
 	DateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
 	private int resourceId;
 
-	public CustomListAdapter(Context context, int resourceId)
-	{
+
+	public CustomListAdapter(Context context, int resourceId) {
 		super(context, resourceId);
 		this.resourceId = resourceId;
 	}
 
-	public CustomListAdapter(Context context, int resourceId, List<Runda> list)
-	{
+	public CustomListAdapter(Context context, int resourceId, List<Runda> list) {
 		super(context, resourceId, list);
 		this.resourceId = resourceId;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
-	{
-		if(convertView == null)
-		{
+	public View getView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null) {
 			LayoutInflater li = LayoutInflater.from(getContext());
 			convertView = li.inflate(resourceId, null);
 		}
 
 		Runda runda = getItem(position);
 
-		if(runda != null)
-		{
+		if (runda != null) {
 			TextView name = (TextView) convertView.findViewById(R.id.name);
 			TextView starost = (TextView) convertView.findViewById(R.id.starost);
+			TextView date = (TextView) convertView.findViewById(R.id.starost);
 			TextView count05 = (TextView) convertView.findViewById(R.id.count05);
 			TextView count03 = (TextView) convertView.findViewById(R.id.count03);
 			TextView suma = (TextView) convertView.findViewById(R.id.suma);
 
-			if(name != null)
+			if (name != null)
 				name.setText(runda.getPivo().getName());
-			if(starost != null){
-				//date.setText(formatter.format(runda.getDate()));
+			if (starost != null) {
+				date.setText(formatter.format(runda.getDate()));
 				long millisAge = new Date().getTime() - runda.getDate().getTime();
 				long days = millisAge / (1000 * 60 * 60 * 24);
-				starost.setText(""+days);
+				starost.setText("" + days);
+				String ime = runda.getPivo().getName();
 
-				if(days < 21){
+				if (days < 8) {
 					starost.setTextColor(Color.RED);
 					//convertView.setBackgroundColor(Color.RED);
-				}
-				else{
-					starost.setTextColor(Color.BLACK);
-					//convertView.setBackgroundColor(Color.TRANSPARENT);
+				} else if (days < 21) {
+					starost.setTextColor(Color.BLUE);
+					//convertView.setBackgroundColor(Color.RED);
+				} else {
+					switch (ime) {
+						case "Sigismundus":
+							starost.setTextColor(Color.BLUE);
+							break;
+						default:
+							starost.setTextColor(Color.BLACK);
+							break;
+					}
 				}
 			}
 
-			if(count05 != null)
-				count05.setText(String.format("%2d", runda.getCount05()));
-			if(count03 != null)
-				count03.setText(String.format("%2d", runda.getCount03()));
-			suma.setText(String.format("%2d", runda.getCount05() + runda.getCount03()));
+				if (count05 != null)
+					count05.setText(String.format("%2d", runda.getCount05()));
+				if (count03 != null)
+					count03.setText(String.format("%2d", runda.getCount03()));
+				suma.setText(String.format("%2d", runda.getCount05() + runda.getCount03()));
+			}
+			return convertView;
 		}
-		return convertView;
 	}
-}
