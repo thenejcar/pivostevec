@@ -109,6 +109,9 @@ public class MainActivity extends AppCompatActivity
 			case R.id.history:
 				startActivity(new Intent(MainActivity.this, HistoryActivity.class));
 				return true;
+			case R.id.uredi_pivo:
+				startActivity(new Intent(MainActivity.this, EditActivity.class));
+				return true;
 			case R.id.dodaj:
 				Intent intent = new Intent(MainActivity.this, AddActivity.class);
 				startActivity(intent);

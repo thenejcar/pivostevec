@@ -6,4 +6,7 @@
     <item
         android:id="@+id/dodaj"
         android:title="Dodaj rundo"/>
+    <item
+        android:id="@+id/uredi_pivo"
+        android:title="Urejaj pivo"/>
 </menu>

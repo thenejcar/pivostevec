@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -141,6 +142,10 @@ public class RundaDetailsActivity extends AppCompatActivity
 		});
 	}
 
+	public void onClick (View v){
+		Intent intent = new Intent(this, Runda2DetailsActivity.class);
+		startActivity(intent);
+	}
 	public void onIncrease(View v)
 	{
 		Log.d(TAG, "clicked on increase");
