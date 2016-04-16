@@ -34,6 +34,10 @@
             android:name=".activities.Runda2DetailsActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+                android:name=".activities.RundaDetailsActivity"
+                android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".activities.HistoryActivity">
         </activity>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
