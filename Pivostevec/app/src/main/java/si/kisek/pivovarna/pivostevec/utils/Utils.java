@@ -1,8 +1,15 @@
 package si.kisek.pivovarna.pivostevec.utils;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,22 +33,69 @@ public class Utils
 	public static final String PIVO_FILE = "saved_pivo_list.json";
 	public static final String ARCHIVE_FILE = "archive.json";
 
-	private static File getPivoFile(Context context)
-	{
-		return new File(context.getFilesDir(), PIVO_FILE);
+	public static final String[] STORAGE_PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+
+	private static File getPivoFile(Context context) {
+		permissionCheck(context, STORAGE_PERMISSIONS);
+		if (isExternalStorageWritable()){
+			File dir = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DOCUMENTS), "pivovarna/");
+			if (!dir.mkdir() && !dir.mkdirs() && !dir.exists()) {
+				Log.e(TAG, "Directory not created");
+			} else {
+				return new File(dir, PIVO_FILE);
+			}
+		}
+		Toast.makeText(context, "Can't get the pivo file", Toast.LENGTH_LONG).show();
+		Log.d(TAG, "cant get the pivo file");
+		return null;
 	}
-	private static File getRundaFile(Context context)
-	{
-		return new File(context.getFilesDir(), RUNDA_FILE);
+
+	private static File getRundaFile(Context context) {
+		permissionCheck(context, STORAGE_PERMISSIONS);
+		if (isExternalStorageWritable()){
+			File dir = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DOCUMENTS), "pivovarna/");
+			if (!dir.mkdir() && !dir.mkdirs() && !dir.exists()) {
+				Log.e(TAG, "Directory not created");
+			} else {
+				return new File(dir, RUNDA_FILE);
+			}
+		}
+		Toast.makeText(context, "Can't get the runda file", Toast.LENGTH_LONG).show();
+		Log.d(TAG, "cant get the runda file");
+		return null;
 	}
-	private static File getArchiveFile(Context context)
-	{
-		return new File(context.getFilesDir(), ARCHIVE_FILE);
+	private static File getArchiveFile(Context context) {
+		permissionCheck(context, STORAGE_PERMISSIONS);
+		if (isExternalStorageWritable()){
+			File dir = new File(Environment.getExternalStoragePublicDirectory(
+					Environment.DIRECTORY_DOCUMENTS), "pivovarna/");
+			if (!dir.mkdir() && !dir.mkdirs() && !dir.exists()) {
+				Log.e(TAG, "Directory not created");
+			} else {
+				return new File(dir, ARCHIVE_FILE);
+			}
+		}
+		Toast.makeText(context, "Can't get the archive file", Toast.LENGTH_LONG).show();
+
+		Log.d(TAG, "cant get the archive file");
+		return null;
 	}
+
+	public static boolean isExternalStorageWritable() {
+		String state = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(state)) {
+			return true;
+		}
+		return false;
+	}
+
 
 	public static List<Runda> getSavedRundas(Context context)
 	{
 		File file = getRundaFile(context);
+		if (file == null) return new ArrayList<>();
 		try
 		{
 			long length = file.length();
@@ -81,6 +135,7 @@ public class Utils
 		Collections.sort(list, dateComparator);
 
 		File file = getRundaFile(context);
+		if (file == null) return;
 		try
 		{
 			JSONArray arr = new JSONArray();
@@ -102,6 +157,7 @@ public class Utils
 	public static List<Pivo> getSavedPivos(Context context)
 	{
 		File file = getPivoFile(context);
+		if (file == null) return new ArrayList<>();
 		try
 		{
 			long length = file.length();
@@ -143,6 +199,7 @@ public class Utils
 	public static void savePivos(Context context, List<Pivo> list)
 	{
 		File file = getPivoFile(context);
+		if (file == null) return;
 		try
 		{
 			JSONArray arr = new JSONArray();
@@ -227,6 +284,7 @@ public class Utils
 	{
 		File file = getArchiveFile(context);
 		List<Runda> list = new ArrayList<Runda>();
+		if (file == null) return;
 		try
 		{
 			long length = file.length();
@@ -281,6 +339,7 @@ public class Utils
 	{
 		File file = getArchiveFile(context);
 		List<Runda> list = new ArrayList<Runda>();
+		if (file == null) return new ArrayList<>();
 		try
 		{
 			long length = file.length();
@@ -310,5 +369,18 @@ public class Utils
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public static void permissionCheck(Context context, String[] permissions) {
+		boolean allGranted = true;
+		for (String permission : permissions) {
+			if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED){
+				allGranted = false;
+				break;
+			}
+		}
+		if (!allGranted) {
+			ActivityCompat.requestPermissions((Activity) context, permissions, 1);
+		}
 	}
 }
