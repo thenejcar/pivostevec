@@ -13,6 +13,7 @@ import si.kisek.pivovarna.pivostevec.models.Runda;
 import si.kisek.pivovarna.pivostevec.utils.RundaDateComparator;
 import si.kisek.pivovarna.pivostevec.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class HistoryActivity extends AppCompatActivity
 		count03total = (TextView) findViewById(R.id.count03Total);
 		sumaTotal = (TextView) findViewById(R.id.sumaTotal);
 
-		list = Utils.getArchive(context);
+		list = new ArrayList<>();//Utils.getArchive(context);
 		if(list.size() > 0)
 		{
 			RundaDateComparator comparator = new RundaDateComparator();

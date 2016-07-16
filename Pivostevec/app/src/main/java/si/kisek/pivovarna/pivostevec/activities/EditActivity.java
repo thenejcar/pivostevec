@@ -96,7 +96,9 @@ public class EditActivity extends AppCompatActivity
 							}
 							else
 							{
+								/*
 								Pivo newPivo = new Pivo(name.getText().toString(), opis.getText().toString());
+
 								Log.d(TAG, "new Pivo " + newPivo.toString());
 								list.add(newPivo);
 								Utils.savePivos(context, list);
@@ -104,6 +106,7 @@ public class EditActivity extends AppCompatActivity
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, array);
 								spinnerPivo.setAdapter(adapter);
 								spinnerPivo.setSelection(array.length - 2);
+								*/
 							}
 						}
 					});
@@ -187,13 +190,14 @@ public class EditActivity extends AppCompatActivity
 					Toast.makeText(EditActivity.this, "Stevilo steklenic ni v pravilni obliki", Toast.LENGTH_LONG).show();
 					return;
 				}
-
+/*
 				Runda newRunda = new Runda(selectedPivo, dateDate, count05Int, count03Int);
 
 				List<Runda> rundas = Utils.getSavedRundas(context);
 				rundas.add(newRunda);
 				Utils.saveRundas(context, rundas);
 				Utils.addToArchive(context, newRunda);
+*/
 				finish();
 			}
 		});

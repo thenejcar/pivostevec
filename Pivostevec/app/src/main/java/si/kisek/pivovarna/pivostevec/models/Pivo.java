@@ -5,13 +5,23 @@ package si.kisek.pivovarna.pivostevec.models;
  */
 public class Pivo
 {
+	private int id;
 	private String name;
 	private String desc;
 
-	public Pivo(String name, String desc)
+	public Pivo(int id, String name, String desc)
 	{
+		this.id = id;
 		this.name = name;
 		this.desc = desc;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName()

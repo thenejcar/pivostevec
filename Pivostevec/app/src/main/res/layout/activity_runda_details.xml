@@ -14,7 +14,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ime"
+                android:text="@string/name"
             android:onClick="onClick"
             android:clickable="true"
                 android:id="@+id/name" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
@@ -32,13 +32,13 @@
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Stevilo 0.5L steklenic"
+                  android:text="@string/labelCount05"
                   android:layout_above="@+id/container05"
                   android:id="@+id/label05"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Datum polnitve"
+                  android:text="@string/dateOfBottling"
             android:id="@+id/labelDate"
             android:layout_above="@+id/containerDate"
             android:layout_alignParentLeft="true"
@@ -46,14 +46,14 @@
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Starost v dnevih"
+                  android:text="@string/ageDays"
                   android:layout_above="@+id/containerDate"
                   android:layout_alignParentRight="true"
                   android:id="@+id/labelAge"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Stevilo 0.3L steklenic"
+                  android:text="@string/labelCount03"
                   android:id="@+id/label03"
                   android:layout_above="@+id/container03"/>
 
@@ -187,13 +187,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:id="@+id/buttonSave" android:text="Shrani"/>
+                        android:id="@+id/buttonSave" android:text="@string/save"/>
 
                 <Button
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:id="@+id/buttonDelete" android:text="Izbrisi rundo"/>
+                        android:id="@+id/buttonDelete" android:text="@string/deleteBatch"/>
         </LinearLayout>
 
 </RelativeLayout>

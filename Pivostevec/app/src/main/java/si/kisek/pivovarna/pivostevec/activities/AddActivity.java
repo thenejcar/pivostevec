@@ -9,16 +9,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import si.kisek.pivovarna.pivostevec.R;
 import si.kisek.pivovarna.pivostevec.models.Pivo;
 import si.kisek.pivovarna.pivostevec.models.Runda;
+import si.kisek.pivovarna.pivostevec.utils.RESTSingleton;
 import si.kisek.pivovarna.pivostevec.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class AddActivity extends AppCompatActivity
 {
@@ -51,8 +66,29 @@ public class AddActivity extends AppCompatActivity
 
 		context = this;
 
-		list = Utils.getSavedPivos(this);
-		array = arrayFromList(list);
+		final String beerPath = Utils.getApiAddress(context) + "beer";
+		JsonArrayRequest beerReq = new JsonArrayRequest(Request.Method.GET, beerPath, null,
+				new Response.Listener<JSONArray>() {
+					@Override
+					public void onResponse(JSONArray response) {
+						Log.d(TAG, "Beer response " + response);
+						try {
+
+							list = Utils.pivoListFromJSONArray(response);
+							array = arrayFromList(list);
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.e(TAG, "Beer Error response " + error);
+				}
+		});
+		RESTSingleton.getInstance(context).addToRequestQueue(beerReq);
+
 
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, array);
 		spinnerPivo.setAdapter(adapter);
@@ -76,7 +112,7 @@ public class AddActivity extends AppCompatActivity
 					final EditText name = (EditText) v.findViewById(R.id.name);
 					final EditText opis = (EditText) v.findViewById(R.id.desc);
 
-					alertDialog.setPositiveButton("Shrani", new DialogInterface.OnClickListener()
+					alertDialog.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener()
 					{
 						@Override
 						public void onClick(DialogInterface dialog, int which)
@@ -89,10 +125,25 @@ public class AddActivity extends AppCompatActivity
 							}
 							else
 							{
-								Pivo newPivo = new Pivo(name.getText().toString(), opis.getText().toString());
-								Log.d(TAG, "new Pivo " + newPivo.toString());
-								list.add(newPivo);
-								Utils.savePivos(context, list);
+								//Pivo newPivo = new Pivo(-1, name.getText().toString(), opis.getText().toString());
+								//Log.d(TAG, "new Pivo " + newPivo.toString());
+								//list.add(newPivo);
+								//Utils.savePivos(context, list);
+								JsonObjectRequest beerAddReq = new JsonObjectRequest(Request.Method.POST, beerPath,
+										Utils.pivoToJSONObject(new Pivo(-1, name.getText().toString(), opis.getText().toString())),
+										new Response.Listener<JSONObject>() {
+											@Override
+											public void onResponse(JSONObject response) {
+												list.add(Utils.pivoFromJSONObject(response));
+											}
+										}, new Response.ErrorListener() {
+										@Override
+										public void onErrorResponse(VolleyError error) {
+											Log.e(TAG, "error adding Pivo " + error);
+										}
+								});
+								RESTSingleton.getInstance(context).addToRequestQueue(beerAddReq);
+
 								array = arrayFromList(list);
 								ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, array);
 								spinnerPivo.setAdapter(adapter);
@@ -183,10 +234,27 @@ public class AddActivity extends AppCompatActivity
 
 				Runda newRunda = new Runda(selectedPivo, dateDate, count05Int, count03Int);
 
-				List<Runda> rundas = Utils.getSavedRundas(context);
-				rundas.add(newRunda);
-				Utils.saveRundas(context, rundas);
-				Utils.addToArchive(context, newRunda);
+				JsonObjectRequest batchAdd = new JsonObjectRequest(Request.Method.POST,
+						Utils.getApiAddress(context) + "batch/" + Utils.getUserId(context),
+						Utils.rundaToJSONObject(newRunda),
+						new Response.Listener<JSONObject>() {
+							@Override
+							public void onResponse(JSONObject response) {
+								Log.d(TAG, "batch added " + response);
+							}
+						}, new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								Log.e(TAG, "error adding batch " + error);
+							}
+				}
+				);
+				RESTSingleton.getInstance(context).addToRequestQueue(batchAdd);
+
+				//List<Runda> rundas = Utils.getSavedRundas(context);
+				//rundas.add(newRunda);
+				//Utils.saveRundas(context, rundas);
+				//Utils.addToArchive(context, newRunda);
 				finish();
 			}
 		});

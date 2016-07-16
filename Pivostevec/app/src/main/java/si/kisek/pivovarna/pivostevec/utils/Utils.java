@@ -1,6 +1,7 @@
 package si.kisek.pivovarna.pivostevec.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 import org.json.JSONArray;
@@ -13,7 +14,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nejc on 3/26/16.
@@ -21,24 +24,57 @@ import java.util.List;
 public class Utils
 {
 	private static final String TAG = "Utils";
+	public static final String SHARED_PREFS_FILE = "PivostevecPref";
 
+	@Deprecated
 	public static final String RUNDA_FILE = "saved_runda_list.json";
+	@Deprecated
 	public static final String PIVO_FILE = "saved_pivo_list.json";
+	@Deprecated
 	public static final String ARCHIVE_FILE = "archive.json";
 
+	public static String getApiAddress(Context context) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+		return sharedPreferences.getString("address", null);
+	}
+
+	public static String getUserId(Context context) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+		return sharedPreferences.getString("userId", null);
+	}
+
+	public static void storeApiAddress(Context context, String address) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString("address", address);
+		editor.commit();
+	}
+
+	public static void storeUserId(Context context, String userId) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString("userId", userId);
+		editor.commit();
+	}
+
+
+	@Deprecated
 	private static File getPivoFile(Context context)
 	{
 		return new File(context.getFilesDir(), PIVO_FILE);
 	}
+	@Deprecated
 	private static File getRundaFile(Context context)
 	{
 		return new File(context.getFilesDir(), RUNDA_FILE);
 	}
+	@Deprecated
 	private static File getArchiveFile(Context context)
 	{
 		return new File(context.getFilesDir(), ARCHIVE_FILE);
 	}
-
+/*
+	@Deprecated
 	public static List<Runda> getSavedRundas(Context context)
 	{
 		File file = getRundaFile(context);
@@ -74,7 +110,8 @@ public class Utils
 		}
 		return new ArrayList<>();
 	}
-
+*/
+	@Deprecated
 	public static void saveRundas(Context context, List<Runda> list)
 	{
 		RundaDateComparator dateComparator = new RundaDateComparator();
@@ -99,6 +136,7 @@ public class Utils
 		}
 	}
 
+	@Deprecated
 	public static List<Pivo> getSavedPivos(Context context)
 	{
 		File file = getPivoFile(context);
@@ -140,6 +178,7 @@ public class Utils
 
 	}
 
+	@Deprecated
 	public static void savePivos(Context context, List<Pivo> list)
 	{
 		File file = getPivoFile(context);
@@ -168,6 +207,8 @@ public class Utils
 		JSONObject obj = new JSONObject();
 		try
 		{
+			if (pivo.getId() != -1)
+				obj.put("beerId", pivo.getId());
 			obj.put("name", pivo.getName());
 			obj.put("desc", pivo.getDesc());
 		}
@@ -183,7 +224,7 @@ public class Utils
 		JSONObject obj = new JSONObject();
 		try
 		{
-			obj.put("pivo", pivoToJSONObject(runda.getPivo()));
+			obj.put("beerId", runda.getPivo().getId());
 			obj.put("date", runda.getDate().getTime());
 			obj.put("count05", runda.getCount05());
 			obj.put("count03", runda.getCount03());
@@ -199,7 +240,7 @@ public class Utils
 	{
 		try
 		{
-			return new Pivo(obj.getString("name"), obj.getString("desc"));
+			return new Pivo(obj.getInt("beerId"), obj.getString("name"), obj.getString("desc"));
 		}
 		catch (JSONException e)
 		{
@@ -207,22 +248,31 @@ public class Utils
 			return null;
 		}
 	}
-	public static Runda rundaFromJSONObject(JSONObject obj)
-	{
-		try
-		{
-			return new Runda(pivoFromJSONObject(obj.getJSONObject("pivo")),
+	public static Runda rundaFromJSONObject(JSONObject obj, Map<Integer, Pivo> beerMap) throws JSONException {
+		return new Runda(beerMap.get(obj.getInt("beerId")),
 					new Date(obj.getLong("date")),
 					obj.getInt("count05"),
 					obj.getInt("count03"));
-		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
 	}
 
+	public static Map<Integer, Pivo> pivoMapFromJSONArray(JSONArray arr) throws JSONException {
+		Map<Integer, Pivo> map = new HashMap<>();
+		for (int i=0; i<arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			map.put(obj.getInt("beerId"), new Pivo(obj.getInt("beerId"), obj.getString("name"), obj.getString("desc")));
+		}
+		return map;
+	}
+	public static List<Pivo> pivoListFromJSONArray(JSONArray arr) throws JSONException {
+		List<Pivo> list = new ArrayList<>();
+		for (int i=0; i<arr.length(); i++) {
+			JSONObject obj = arr.getJSONObject(i);
+			list.add(new Pivo(obj.getInt("beerId"), obj.getString("name"), obj.getString("desc")));
+		}
+		return list;
+	}
+/*
+	@Deprecated
 	public static void addToArchive(Context context, Runda runda)
 	{
 		File file = getArchiveFile(context);
@@ -277,6 +327,7 @@ public class Utils
 		}
 	}
 
+	@Deprecated
 	public static List<Runda> getArchive(Context context)
 	{
 		File file = getArchiveFile(context);
@@ -311,4 +362,5 @@ public class Utils
 		}
 		return list;
 	}
+	*/
 }

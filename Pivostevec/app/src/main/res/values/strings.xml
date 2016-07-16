@@ -1,4 +1,30 @@
 <resources>
     <string name="app_name">Pivostevec</string>
     <string name="title_activity_details">DetailsActivity</string>
+
+    <string name="beer">Pivo</string>
+    <string name="date">Datum</string>
+    <string name="save">Shrani</string>
+    <string name="count">Število</string>
+    <string name="days">Dni</string>
+    <string name="liter05">0.5L</string>
+    <string name="liter03">0.3L</string>
+    <string name="name">Ime</string>
+
+    <string name="userId">Uporabnik:</string>
+    <string name="address">Naslov:</string>
+    <string name="login">Prijava</string>
+
+    <string name="labelCount05">Število - 0.5L steklenice</string>
+    <string name="labelCount03">Število - 0.3L steklenice</string>
+
+    <string name="totalCount">Skupaj zaloga:</string>
+    <string name="no_beer">Ni piva!</string>
+
+    <string name="dateOfBottling">Datum polnitve</string>
+    <string name="ageDays">Starost v dnevih</string>
+
+    <string name="deleteBatch">Izbriši rundo</string>
+
+
 </resources>
